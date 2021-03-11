@@ -11,3 +11,9 @@ a personal fork of [Setter](https://github.com/scubajeff/Setter) for [MyOS Proje
   - INTERNET
 
 ## Screenshots
+<p align="center">
+<img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/Screenshots/1.png" width="40%">
+<img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/Screenshots/2.png" width="40%">
+<img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/Screenshots/3.png" width="40%">
+<img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/Screenshots/4.png" width="40%">
+</p>
