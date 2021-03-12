@@ -81,23 +81,26 @@
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
             android:finishOnCloseSystemDialogs="true"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/settings">
         </activity>
 
         <activity
             android:name=".DirectSearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:clearTaskOnLaunch="true"
+            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST" />
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+
         </activity>
 
         <receiver android:name=".SearchWidget">

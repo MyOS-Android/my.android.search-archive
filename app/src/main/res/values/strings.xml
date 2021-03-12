@@ -1,6 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">Search</string>
+    <string name="settings">Settings</string>
     <string name="dict_name">Look up</string>
     <string name="websearch_name">Search</string>
     <string name="metasearch_name">Meta Search</string>
