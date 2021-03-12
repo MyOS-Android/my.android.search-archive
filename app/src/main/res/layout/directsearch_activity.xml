@@ -13,6 +13,7 @@
         android:hint="@string/edit_query_hint"
         android:imeOptions="actionSearch"
         android:inputType="textAutoComplete"
+        android:backgroundTint="@color/colorPrimary"
         android:padding="8dp" />
 
     <RadioGroup
@@ -27,12 +28,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:buttonTint="@color/colorPrimary"
             android:text="@string/meta_search_choice"/>
 
         <RadioButton
             android:id="@+id/browser_query"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary"
             android:layout_weight="1"
             android:text="@string/browser_search_choice"/>
     </RadioGroup>
