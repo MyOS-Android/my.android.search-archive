@@ -38,35 +38,35 @@
     <string name="url_duck" translatable="false">https://duckduckgo.com/?q=</string>
     <string name="url_sp" translatable="false">https://www.startpage.com/do/dsearch?query=</string>
     <string name="url_qwant" translatable="false">https://www.qwant.com/?q=</string>
-    <string name="url_google" translatable="false">https://google.com/search?q=</string>
-    <string name="url_bing" translatable="false">https://bing.com/search?q=</string>
-    <string name="url_mojeek" translatable="false">https://mojeek.com/search?q=</string>
     <string name="url_metaGer" translatable="false">https://metager.org/meta/meta.ger3?eingabe=</string>
+    <string name="url_mojeek" translatable="false">https://mojeek.com/search?q=</string>
     <string name="url_swisscows" translatable="false">https://swisscows.com/web?query=</string>
     <string name="url_ecosia" translatable="false">https://ecosia.org/search?q=</string>
     <string name="url_whoogle_1" translatable="false">https://whoogle.sdf.org/search?q=</string>
     <string name="url_whoogle_2" translatable="false">https://whoogle.himiko.cloud/search?q=</string>
+    <string name="url_google" translatable="false">https://google.com/search?q=</string>
+    <string name="url_bing" translatable="false">https://bing.com/search?q=</string>
 
     <string-array name="web_search_engine_entries">
         <item>🇺🇸 DuckDuckGo</item>
         <item>🇳🇱 StartPage</item>
         <item>🇫🇷 Qwant</item>
-        <item>🇬🇧 Mojeek</item>
         <item>🇩🇪 MetaGer</item>
+        <item>🇬🇧 Mojeek</item>
         <item>🇨🇭 Swisscows</item>
-        <item>Escosia</item>
+        <item>🇩🇪 Escosia 🌲</item>
         <item>Whoogle.sdf</item>
         <item>🇧🇬 Whoogle.himiko</item>
-        <item>Google</item>
-        <item>Bing</item>
+        <item>🇺🇸 Google</item>
+        <item>🇺🇸 Bing</item>
     </string-array>
 
     <string-array name="web_search_engine_values">
         <item>@string/url_duck</item>
         <item>@string/url_sp</item>
         <item>@string/url_qwant</item>
-        <item>@string/url_mojeek</item>
         <item>@string/url_metaGer</item>
+        <item>@string/url_mojeek</item>
         <item>@string/url_swisscows</item>
         <item>@string/url_ecosia</item>
         <item>@string/url_whoogle_1</item>
@@ -126,9 +126,9 @@
     <string name="url_nitter_8" translatable="false">https://nitter.nixnet.services/search?q=</string>
 
     <string-array name="twitter_search_engine_entries">
-        <item>twitter.com</item>
+        <item>🇺🇸 twitter.com</item>
         <item>🇩🇪 nitter.net</item>
-        <item>nitter.snopyta.org</item>
+        <item>🇩🇪 nitter.snopyta.org</item>
         <item>🇩🇪 nitter.pussthecat.org </item>
         <item>🇮🇳 nitter.kavin.rocks (C)</item>
         <item>🇫🇷 nitter.42l.fr</item>
@@ -162,12 +162,12 @@
     <string name="url_teddit_2" translatable="false">https://teddit.ggc-project.de/search?q=</string>
 
     <string-array name="reddit_search_engine_entries">
-        <item>Reddit.com</item>
-        <item>Old Reddit</item>
+        <item>🇺🇸 reddit.com</item>
+        <item>🇺🇸 old.reddit</item>
         <item>🇺🇸 libredd (Official)</item>
         <item>🇮🇳 libreddit.kavin.rocks (C)</item>
         <item>🇧🇬 libreddit.himiko.cloud</item>
-        <item>teddit (Official)</item>
+        <item>teddit.net (Official)</item>
         <item>🇮🇳 teddit.kavin.rocks (C)</item>
         <item>🇩🇪 teddit.ggc-project.de (C)</item>
     </string-array>
@@ -201,7 +201,7 @@
     <string name="url_invidious_13"  translatable="false">https://vid.mint.lgbt/results?q=</string>
 
     <string-array name="youtube_search_engine_entries">
-        <item>Youtube.com</item>
+        <item>🇺🇸 youtube.com</item>
         <item>🇫🇮 invidious.snopyta.org</item>
         <item>🇩🇪 invidious.namazso.eu</item>
         <item>🇫🇷 invidious.fdn.fr</item>
