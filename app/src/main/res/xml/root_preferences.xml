@@ -13,6 +13,7 @@
             app:iconSpaceReserved="false" >
             <intent android:action="android.settings.MANAGE_DEFAULT_APPS_SETTINGS"/>
         </Preference>
+
         <Preference
             android:key="@string/add_widget_key"
             app:title="@string/add_widget_title"
@@ -26,6 +27,7 @@
             app:defaultValue="true"
             android:singleLineTitle="true"
             app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -39,11 +41,12 @@
             app:summary="@string/colordict_intro"
             app:isPreferenceVisible="true"
             app:iconSpaceReserved="false" >
-        <intent
+            <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://play.google.com/store/apps/details?id=com.socialnmobile.colordict" >
             </intent>
         </Preference>
+
         <SwitchPreferenceCompat
             app:key="@string/colordict_fullscreen_key"
             app:title="@string/colordict_fullscreen_title"

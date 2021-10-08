@@ -148,9 +148,9 @@ class WebSearchActivity : AppCompatActivity() {
                         }
                     }
                 }
+
                 tabs.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
                     override fun onTabReselected(tab: TabLayout.Tab?) {
-
                     }
 
                     override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -199,8 +199,6 @@ class WebSearchActivity : AppCompatActivity() {
                         }
                     }
                 })
-
-
             }
             else {
                 val searchIntent = Intent(Intent.ACTION_VIEW, Uri.parse(sp.getString(getString(R.string.search_engine_key), getString(R.string.url_duck))+query))
