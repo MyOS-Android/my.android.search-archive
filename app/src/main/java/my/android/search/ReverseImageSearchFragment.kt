@@ -2,6 +2,7 @@ package my.android.search
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -15,6 +16,9 @@ import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,9 +52,10 @@ class ReverseImageSearchFragment : Fragment() {
 
         // Prepare webView
         webView.settings.apply {
-            userAgentString = USER_AGENT_CHROME
+            userAgentString = USER_AGENT_WEB
             //cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
+            domStorageEnabled = true
             javaScriptCanOpenWindowsAutomatically = false
             loadsImagesAutomatically = true
             layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
@@ -60,6 +65,10 @@ class ReverseImageSearchFragment : Fragment() {
             displayZoomControls = false
             setSupportZoom(true)
             setGeolocationEnabled(false)
+
+            if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+                WebSettingsCompat.setForceDark(this, WebSettingsCompat.FORCE_DARK_AUTO)
+            }
         }
         webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
         webView.isScrollbarFadingEnabled = true
@@ -219,9 +228,10 @@ class ReverseImageSearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        webView.onResume()
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
-        webView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        webView.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (event.action != KeyEvent.ACTION_UP) return@OnKeyListener true
                 if (resultLoaded) {
@@ -240,12 +250,25 @@ class ReverseImageSearchFragment : Fragment() {
         })
     }
 
+    override fun onPause() {
+        webView.onPause()
+        super.onPause()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(RESULT_LOADED, resultLoaded)
         webView.saveState(outState)
     }
 
+    override fun onDestroy() {
+        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean(getString(R.string.remove_cookie_key), true)) {
+            CookieManager.getInstance().removeAllCookies(null)
+        }
+        super.onDestroy()
+    }
+
+    @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun uploadImage(imageUri: Uri, sampleSize: Int, serviceType: Int): String {
 
         return withContext(Dispatchers.IO) {
@@ -267,7 +290,7 @@ class ReverseImageSearchFragment : Fragment() {
                 conn.doOutput = true
                 conn.requestMethod = "POST"
                 conn.instanceFollowRedirects = false
-                conn.setRequestProperty("User-Agent", USER_AGENT_GOOGLE_NEXUS)
+                conn.setRequestProperty("User-Agent", USER_AGENT_PHONE)
                 conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=$boundary")
 
                 // Http request body
@@ -424,6 +447,10 @@ class ReverseImageSearchFragment : Fragment() {
         }
     }
 
+    fun getCurrentUrl(): String? {
+        return webView.url
+    }
+
     // Calculate inSampleSize for image decoding, the longest side length is around MAX_SIDE_LENGTH, so that the decoded size is relative small, but
     // enough for image recognition
     private fun getSampleSize(currentWidth: Int, requiredWidth: Int): Int {
@@ -440,9 +467,8 @@ class ReverseImageSearchFragment : Fragment() {
         const val SERVICE_KEY = "SERVICE_KEY"
         const val RESULT_LOADED = "RESULT_LOADED"
         const val MAX_SIDE_LENGTH:Int = 256
-        const val USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
-        const val USER_AGENT_GOOGLE_NEXUS = "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7"
-
+        const val USER_AGENT_WEB = "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0"
+        const val USER_AGENT_PHONE = "Mozilla/5.0 (Android 9; Mobile; rv:78.0) Gecko/20100101 Firefox/78.0"
         const val SERVICES_TOTAL = 5
         const val SERVICE_GOOGLE = 0
         const val SERVICE_SOGOU = 1

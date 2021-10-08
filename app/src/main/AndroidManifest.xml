@@ -4,6 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <queries>
+        <package android:name="com.socialnmobile.colordict" />
+        <intent>
+            <action android:name="colordict.intent.action.SEARCH" />
+        </intent>
+    </queries>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -11,7 +23,7 @@
         android:label="@string/app_name"
         android:appCategory="productivity"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
 
@@ -20,12 +32,16 @@
         <activity
             android:name=".ReverseImageSearchActivity"
             android:label="@string/reverseimagesearch_name"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:launchMode="singleTask">
             <intent-filter android:label="@string/reverseimagesearch_name">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="my.android.search.REVERSE_SEARCH_LINK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.SEND" />
@@ -48,28 +64,18 @@
         <activity
             android:name=".TranslationActivity"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:launchMode="singleTask" />
 
         <activity
             android:name=".WebSearchActivity"
             android:label="@string/metasearch_name"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".WebSearchActionActivity"
-            android:label="@string/websearch_name"
-            android:clearTaskOnLaunch="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.WEB_SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -79,38 +85,31 @@
         <activity
             android:name=".SettingsActivity"
             android:clearTaskOnLaunch="true"
-            android:excludeFromRecents="true"
-            android:finishOnCloseSystemDialogs="true"
             android:label="@string/settings">
         </activity>
 
         <activity
             android:name=".DirectSearchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST" />
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
-
         </activity>
 
         <receiver android:name=".SearchWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/search_widget_info" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/search_widget_info" />
         </receiver>
 
     </application>

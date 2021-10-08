@@ -5,8 +5,8 @@
     <string name="dict_name">Look up</string>
     <string name="websearch_name">Search</string>
     <string name="metasearch_name">Meta Search</string>
-    <string name="reverseimagesearch_name">Reverse Image</string>
-
+    <string name="reverseimagesearch_name">Image Search</string>
+    <string name="assistant_key">DEFAULT_ASSISTANT</string>
     <!-- Translator -->
     <string name="translator_header">Translator Setting</string>
     <string name="colordict_fullscreen_key" translatable="false">fullscreen</string>
@@ -21,7 +21,7 @@
     <string name="jikiName">jikipedia</string>
 
     <!-- Search Engine -->
-    <string name="search_engine_header">Web Search Setting</string>s
+    <string name="search_engine_header">Meta Search Setting</string>
     <string name="meta_search_title">Meta Search</string>
     <string name="meta_search_key" translatable="false">META_SEARCH</string>
     <!-- 1 Search Engine -->
@@ -49,14 +49,29 @@
     <string name="pailitao">Pailitao</string>
 
     <!-- Direct Search -->
-    <string name="edit_query_hint">Search phrase or URL</string>
-    <string name="meta_search_choice">Meta Search</string>
+    <string name="edit_search_hint">Search phrase or URL</string>
+    <string name="edit_translate_hint">Translate word or sentence</string>
+    <string name="meta_search_choice">Search</string>
+    <string name="translation_choice">Translate</string>
     <string name="browser_search_choice">Default Browser</string>
+    <string name="meta_search_choice2">Meta Search</string>
 
     <!-- Context Menu -->
-    <string name="menuitem_view_hyperlink">View in App</string>
+    <string name="menuitem_view_hyperlink">Open in App</string>
     <string name="menuitem_share_hyperlink">Share link to</string>
     <string name="menuitem_copy_hyperlink">Copy link</string>
-    <string name="menuitem_dowload_image">Download image</string>
+    <string name="menuitem_download_image">Download image</string>
     <string name="menuitem_search_image">Reverse search image</string>
+    <string name="menuitem_browser">Open in Browser</string>
+
+    <!-- Setting -->
+    <string name="remove_cookie_key" translatable="false">REMOVE_COOKIES</string>
+    <string name="remove_cookie_title">Remove All Cookies</string>
+    <string name="remove_cookie_summary">Remove all cookies when Search is closed</string>
+    <string name="set_as_assistant_title">Set as default assistant app</string>
+    <string name="set_as_assistant_summary">Allow Search launched on any screen</string>
+    <string name="add_widget_key" translatable="false">ADD_WIDGET</string>
+    <string name="add_widget_title">Add widget on home screen</string>
+    <string name="add_widget_summary">Launch Search from home screen</string>
+    <string name="search_now_title">Search now!</string>
 </resources>

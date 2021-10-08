@@ -1,5 +1,7 @@
 package my.android.search
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -18,12 +20,11 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
-    class SettingsFragment() : PreferenceFragmentCompat() {
+    class SettingsFragment: PreferenceFragmentCompat() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
-
 
         override fun onResume() {
             super.onResume()
@@ -33,8 +34,15 @@ class SettingsActivity : AppCompatActivity() {
             findPreference<Preference>(getString(R.string.install_colordict_key))?.isVisible = !colorDictAvailable
         }
 
+        override fun onPreferenceTreeClick(preference: Preference): Boolean =
+            if (preference.key == getString(R.string.add_widget_key)) {
+                requireContext().getSystemService(AppWidgetManager::class.java).requestPinAppWidget(ComponentName(requireContext(), SearchWidget::class.java), null, null)
+                true
+            }
+            else super.onPreferenceTreeClick(preference)
+
         private fun isColorDictAvailable(): Boolean {
-            return requireActivity().packageManager?.queryIntentActivities(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY)?.size!! > 0
+            return requireContext().packageManager.resolveActivity(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY) != null
         }
     }
 }

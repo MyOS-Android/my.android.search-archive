@@ -2,6 +2,8 @@
 <resources>
     <color name="colorPrimary">#164377</color>
     <color name="colorPrimaryDark">#0e2e52</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#164377</color>
+    <color name="widget_background">#EDEDED</color>
+    <color name="widget_text">#000</color>
     <color name="ic_launcher_background">#164377</color>
 </resources>

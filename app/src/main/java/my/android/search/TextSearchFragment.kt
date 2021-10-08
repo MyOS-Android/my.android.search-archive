@@ -1,35 +1,37 @@
 package my.android.search
 
-import android.content.Intent
+import android.annotation.SuppressLint
+import android.content.*
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.*
 import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
 
-
 class TextSearchFragment : Fragment(){
-    lateinit var webView :WebView
-    var resultLoaded = false
-    lateinit var urlString :String
-    override fun onCreate(savedInstanceState: Bundle?) {
-        urlString = arguments?.getString(PARAM_KEY)!!
+    private lateinit var webView: WebView
+    private var resultLoaded = false
+    private lateinit var urlString: String
+    private var popupRemoved = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        urlString = arguments?.getString(KEY_URL)!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_webview, container, false)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
@@ -37,9 +39,10 @@ class TextSearchFragment : Fragment(){
 
         // Prepare webView
         webView.settings.apply {
-            //userAgentString = GoogleReverseImageSearchFragment.USER_AGENT_CHROME
+            userAgentString = ReverseImageSearchFragment.USER_AGENT_PHONE
             //cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
+            domStorageEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
             loadsImagesAutomatically = true
             loadWithOverviewMode = true
@@ -48,14 +51,35 @@ class TextSearchFragment : Fragment(){
             displayZoomControls = false
             setSupportZoom(true)
             setGeolocationEnabled(false)
+
+            if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+                WebSettingsCompat.setForceDark(this, WebSettingsCompat.FORCE_DARK_ON)
+            }
         }
         webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
         webView.isScrollbarFadingEnabled = true
 
+        registerForContextMenu(webView)
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean =
+                request?.let {
+                    when(it.url.scheme) {
+                        in setOf("http", "https")-> {
+                            false
+                        }
+                        else-> {
+                            try {
+                                startActivity(Intent().setAction(Intent.ACTION_VIEW).setData(it.url))
+                            } catch (e: ActivityNotFoundException) {
+                                e.printStackTrace()
+                            }
+                            webView.stopLoading()
+                            true
+                        }
+                    }
+                } ?: true
 
             /*
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
@@ -70,33 +94,42 @@ class TextSearchFragment : Fragment(){
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 super.onReceivedError(view, request, error)
                 // Reload the page when ERROR_TIMEOUT or ERROR_HOST_LOOKUP happens on base url
-                if (error?.errorCode == WebViewClient.ERROR_TIMEOUT || error?.errorCode == WebViewClient.ERROR_HOST_LOOKUP) {
+                if (error?.errorCode == ERROR_TIMEOUT || error?.errorCode == ERROR_HOST_LOOKUP) {
                     if (urlString.contains(request?.url?.host.toString())) view?.reload()
                 }
                 //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
             }
-        }
 
-        webView.setOnLongClickListener { v ->
-            val hitTestResult = (v as WebView).hitTestResult
-            when (hitTestResult.type) {
-                WebView.HitTestResult.SRC_ANCHOR_TYPE -> {
-                    startActivity(Intent().apply {
-                        action = Intent.ACTION_VIEW
-                        data = Uri.parse(hitTestResult.extra)
-                    })
-                    true
-                }
-                WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE -> {
-                    startActivity(Intent().apply {
-                        // Open IMAGE Link On External Browser
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, hitTestResult.extra)
-                    })
-                    true
-                }
-                else -> {
-                    false
+            override fun onPageFinished(view: WebView?, url: String?) {
+                url?.let {
+                    when {
+                        it.contains("deepl.com")-> {
+                            view?.evaluateJavascript("(function() { document.getElementById('dl_cookieBanner').style.display = 'none'; document.getElementById('footer').style.display = 'none'; })();") {}
+                        }
+                        it.contains("duckduckgo.com")-> {
+                            view?.postDelayed(Runnable { view.evaluateJavascript("(function() { var a1 = document.getElementsByClassName(\"results--ads\"); for(var i=0;i<a1.length;i++) a1[i].parentNode.removeChild(a1[i]);})();") {}},2000)
+                        }
+                        it.contains("startpage.com")-> {
+                            view?.evaluateJavascript("(function() { document.getElementById(\"gcsa-top\").remove();})();") {}
+                        }
+                        it.contains("twitter.com")-> {
+                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 2000)
+                        }
+                        it.contains("reddit.com")-> {
+                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('XPromoPill__container')[0].style.display = 'none'; })();") {} }, 2000)
+                        }
+                        it.contains("weixin.sogou.com")-> {
+                            view?.evaluateJavascript("(function() { document.getElementById('right').style.display = 'none'; document.getElementById('s_footer').style.display = 'none'; document.getElementsByClassName('header-box')[0].style.display = 'none'; document.getElementsByClassName('back-top')[0].style.display = 'none'; document.getElementsByClassName('bottom-form')[0].style.display = 'none'; document.getElementById('main').setAttribute(\"style\",\"width:100vw\"); document.getElementById('wrapper').setAttribute(\"style\",\"width:100vw\"); document.getElementById('pagebar_container').setAttribute(\"style\",\"width:100vw\"); })();") {}
+                        }
+                        it.contains("weibo.cn")-> {
+                            view?.postDelayed(Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('card card11')[0].style.display = 'none'; document.getElementsByClassName('m-tab-bar m-bar-panel m-container-max')[0].style.display = 'none'; })();") {} }, 2000)
+                        }
+                        (it.contains("stackoverflow.com") || it.contains("stackexchange.com"))-> {
+                            //view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('js-consent-banner')[0].style.display = 'none'; })();") {} }, 1000)
+                            view?.evaluateJavascript("(function() { document.getElementsByClassName('js-consent-banner')[0].style.display = 'none'; })();") {}
+                        }
+                        else-> {}
+                    }
                 }
             }
         }
@@ -134,6 +167,16 @@ class TextSearchFragment : Fragment(){
             }
         }
 
+        /*
+        // catch link clicked event
+        webView.setOnTouchListener { v, event ->
+            webView.hitTestResult.apply {
+                Log.e(">>>>", "${this.type} ${this.extra}")
+            }
+            false
+        }
+         */
+
         if (savedInstanceState != null) {
             resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)
             webView.restoreState(savedInstanceState)
@@ -150,6 +193,9 @@ class TextSearchFragment : Fragment(){
     override fun onResume() {
         super.onResume()
 
+        popupRemoved = false
+
+        webView.onResume()
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
         webView.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
@@ -170,21 +216,139 @@ class TextSearchFragment : Fragment(){
         })
     }
 
+    override fun onPause() {
+        webView.onPause()
+        super.onPause()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(RESULT_LOADED, resultLoaded)
         webView.saveState(outState)
     }
 
+    override fun onDestroy() {
+        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean(getString(R.string.remove_cookie_key), true)) {
+            CookieManager.getInstance().removeAllCookies(null)
+            CookieManager.getInstance().flush()
+            webView.clearFormData();
+            webView.clearHistory();
+            webView.clearMatches();
+            webView.clearSslPreferences();
+            val privateDataDirectoryString: String? = requireContext().getPackageManager()?.getPackageInfo(requireContext().getPackageName(), 0)?.applicationInfo?.dataDir
+            Runtime.getRuntime().exec("rm -rf " + privateDataDirectoryString + "/cache");
+            Runtime.getRuntime().exec("rm -rf " + privateDataDirectoryString + "/app_webview")
+        }
+        super.onDestroy()
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        when (webView.hitTestResult.type) {
+/*
+            WebView.HitTestResult.UNKNOWN_TYPE-> {
+                menu.add(0, MENU_ITEM_UNKNOWN, 0, R.string.menuitem_browser)
+                menu.add(0, MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
+                menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
+                menu.setHeaderTitle(webView.url)
+            }
+*/
+            WebView.HitTestResult.SRC_ANCHOR_TYPE, WebView.HitTestResult.EMAIL_TYPE, WebView.HitTestResult.GEO_TYPE, WebView.HitTestResult.PHONE_TYPE-> {
+                menu.add(0, MENU_ITEM_VIEW_HYPERLINK, 0, R.string.menuitem_view_hyperlink)
+                menu.add(0, MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
+                menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
+                menu.setHeaderTitle(webView.hitTestResult.extra.toString())
+            }
+            WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE-> {
+                menu.add(0, MENU_ITEM_SEARCH_IMAGE, 0, R.string.menuitem_search_image)
+                //menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 1, R.string.menuitem_download_image)
+            }
+            else-> super.onCreateContextMenu(menu, v, menuInfo)
+        }
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean =
+        webView.hitTestResult.extra?.let {
+            when(item.itemId) {
+                MENU_ITEM_VIEW_HYPERLINK->{
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+                    true
+                }
+                MENU_ITEM_SHARE_HYPERLINK->{
+                    startActivity(Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, it)
+                        type = "text/plain"
+                    })
+                    true
+                }
+                MENU_ITEM_COPY_HYPERLINK->{
+                    (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("", it))
+                    true
+                }
+                MENU_ITEM_DOWNLOAD_IMAGE->{
+                    true
+                }
+                MENU_ITEM_SEARCH_IMAGE->{
+                    startActivity(Intent().apply {
+                        action = ReverseImageSearchActivity.REVERSE_SEARCH_LINK
+                        putExtra(Intent.EXTRA_TEXT, it)
+                        putExtra(SHARE_FROM_ME, true)
+                        type = "text/plain"
+                    })
+                    true
+                }
+                else-> false
+            }
+        } ?: false
+/*
+        run {
+            if (webView.hitTestResult.type == WebView.HitTestResult.UNKNOWN_TYPE) {
+                when(item.itemId) {
+                    MENU_ITEM_UNKNOWN -> {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(webView.url)))
+                        true
+                    }
+                    MENU_ITEM_SHARE_HYPERLINK -> {
+                        startActivity(Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, webView.url)
+                            type = "text/plain"
+                        })
+                        true
+                    }
+                    MENU_ITEM_COPY_HYPERLINK -> {
+                        (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
+                            ClipData.newPlainText("", webView.url)
+                        )
+                        true
+                    }
+                    else -> false
+                }
+            }
+            else false
+        }
+*/
 
     fun reload(newUrl: String) {
         urlString = newUrl
         webView.loadUrl(urlString)
     }
 
+    fun getCurrentUrl(): String? {
+        return webView.url
+    }
+
     companion object {
-        const val RESULT_LOADED = "RESULT_LOADED"
-        const val PARAM_KEY = "URL"
-        fun newInstance(arg: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(PARAM_KEY, arg)}}
+        private const val RESULT_LOADED = "RESULT_LOADED"
+        private const val KEY_URL = "KEY_URL"
+        private const val SHARE_FROM_ME = "SHARE_FROM_ME"
+        private const val MENU_ITEM_VIEW_HYPERLINK = 0
+        private const val MENU_ITEM_SHARE_HYPERLINK = 1
+        private const val MENU_ITEM_COPY_HYPERLINK = 2
+        private const val MENU_ITEM_DOWNLOAD_IMAGE = 3
+        private const val MENU_ITEM_SEARCH_IMAGE = 4
+        private const val MENU_ITEM_UNKNOWN = 5
+
+        fun newInstance(url: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(KEY_URL, url)}}
     }
 }

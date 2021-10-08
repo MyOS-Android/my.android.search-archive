@@ -3,9 +3,9 @@ package my.android.search
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 
 class DictActivity : AppCompatActivity() {
@@ -45,7 +45,9 @@ class DictActivity : AppCompatActivity() {
                         colorDictIntent.putExtra("EXTRA_FULLSCREEN", true)
                     } else {
                         val size = Point()
-                        windowManager.defaultDisplay.getSize(size)
+                        @Suppress("DEPRECATION")
+                        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) windowManager.defaultDisplay.getSize(size)
+                        else display?.getRealSize(size)
                         colorDictIntent.putExtra("EXTRA_FULLSCREEN", false)
                                         .putExtra("EXTRA_HEIGHT", size.y / 2)
                                         .putExtra("EXTRA_MARGIN_LEFT", size.x / 20)
@@ -61,11 +63,11 @@ class DictActivity : AppCompatActivity() {
             }
         }
 
-        startActivity(Intent(this, TranslationActivity::class.java).apply { putExtra("QUERY", query) })
+        startActivity(Intent(this, TranslationActivity::class.java).putExtra(TranslationActivity.KEY_QUERY, query))
         finish()
     }
 
     private fun isColorDictAvailable() : Boolean {
-        return baseContext.packageManager.queryIntentActivities(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY).size > 0
+        return baseContext.packageManager.resolveActivity(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY) != null
     }
 }
