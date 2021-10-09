@@ -38,7 +38,8 @@ class WebSearchActivity : AppCompatActivity() {
 
         if (Intent.ACTION_WEB_SEARCH == intent.action) {
             query = intent.getStringExtra(SearchManager.QUERY) ?: ""
-        } else{
+        }
+        else {
             query = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: ""
             meta = intent.getBooleanExtra(META, true)
         }

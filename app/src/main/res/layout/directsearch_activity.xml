@@ -21,7 +21,7 @@
             android:layout_weight="1"
             style="?attr/materialButtonOutlinedStyle"
             android:textAllCaps="false"
-            android:text="@string/meta_search_choice" />
+            android:text="@string/search_choice" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/translate"
             android:layout_width="0dp"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/colorPrimary"
-                android:text="@string/meta_search_choice2"/>
+                android:text="@string/meta_search_choice"/>
 
             <RadioButton
                 android:id="@+id/browser_query"
@@ -83,7 +83,7 @@
         android:layout_weight="1"
         style="?attr/materialButtonStyle"
         android:textAllCaps="true"
-        android:text="@string/websearch_name" />
+        android:text="@string/search" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settingsbtn"

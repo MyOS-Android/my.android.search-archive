@@ -2,11 +2,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        app:title="General"
+        app:title="@string/general_header"
         app:iconSpaceReserved="false" >
 
         <Preference
-            android:key="@string/assistant_key"
+            android:key="@string/set_as_assistant_key"
             app:title="@string/set_as_assistant_title"
             app:summary="@string/set_as_assistant_summary"
             app:isPreferenceVisible="true"
@@ -94,7 +94,6 @@
             android:entries="@array/searx_search_engine_entries"
             android:entryValues="@array/searx_search_engine_values"
             android:defaultValue="@string/url_searx"
-            android:dependency="@string/meta_search_key"
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 
@@ -105,7 +104,6 @@
             android:entries="@array/twitter_search_engine_entries"
             android:entryValues="@array/twitter_search_engine_values"
             android:defaultValue="@string/url_twitter"
-            android:dependency="@string/meta_search_key"
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 
@@ -116,7 +114,6 @@
             android:entries="@array/reddit_search_engine_entries"
             android:entryValues="@array/reddit_search_engine_values"
             android:defaultValue="@string/url_reddit"
-            android:dependency="@string/meta_search_key"
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 
@@ -127,7 +124,6 @@
             android:entries="@array/youtube_search_engine_entries"
             android:entryValues="@array/youtube_search_engine_values"
             android:defaultValue="@string/url_youtube"
-            android:dependency="@string/meta_search_key"
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 
@@ -136,7 +132,6 @@
             android:title="@string/custom_meta_search_web_engine_title"
             app:singleLineTitle="false"
             android:defaultValue="@string/url_custom"
-            android:dependency="@string/meta_search_key"
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 

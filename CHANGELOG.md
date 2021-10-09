@@ -6,6 +6,12 @@ Release notes
 ## [0.2-beta1] - WIP
 > Based on [Setter v.0.1.6](https://github.com/scubajeff/Setter/releases/tag/0.1.10) - [3c4ec84](https://github.com/scubajeff/Setter/commit/3c4ec84580917f1c60083a4a0e3159e738eb361a)
 
+### Added
+
+### Changed
+- New UI
+### Fixed
+
 
 ## [0.1-beta2] - Unreleased
 
