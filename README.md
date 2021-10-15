@@ -12,8 +12,7 @@ a personal fork of [Setter](https://github.com/scubajeff/Setter) for [MyOS Proje
 
 ## Screenshots
 <p align="center">
-  <img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="40%">
-  <br>
+  <img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="30%">
   <img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="30%">
   <img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="30%">
   <img src="https://raw.githubusercontent.com/MyOS-Android/my.android.search/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="30%">
