@@ -132,7 +132,6 @@ class ReverseImageSearchFragment : Fragment() {
                     resultLoaded = true
                 } else resultLoaded = false
             }
-
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
                 result.cancel()
                 return true
@@ -239,8 +238,7 @@ class ReverseImageSearchFragment : Fragment() {
                         webView.goBack()
 
                         return@OnKeyListener true
-                    }
-                    else activity?.onBackPressed()
+                    } else activity?.onBackPressed()
                 } else {
                     webView.stopLoading()
                     return@OnKeyListener true
@@ -264,6 +262,14 @@ class ReverseImageSearchFragment : Fragment() {
     override fun onDestroy() {
         if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean(getString(R.string.remove_cookie_key), true)) {
             CookieManager.getInstance().removeAllCookies(null)
+            CookieManager.getInstance().flush()
+            webView.clearFormData();
+            webView.clearHistory();
+            webView.clearMatches();
+            webView.clearSslPreferences();
+            val privateDataDirectoryString: String? = requireContext().getPackageManager()?.getPackageInfo(requireContext().getPackageName(), 0)?.applicationInfo?.dataDir
+            Runtime.getRuntime().exec("rm -rf " + privateDataDirectoryString + "/cache");
+            Runtime.getRuntime().exec("rm -rf " + privateDataDirectoryString + "/app_webview")
         }
         super.onDestroy()
     }

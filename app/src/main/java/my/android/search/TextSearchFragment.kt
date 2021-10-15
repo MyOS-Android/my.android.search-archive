@@ -260,7 +260,11 @@ class TextSearchFragment : Fragment(){
             }
             WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE-> {
                 menu.add(0, MENU_ITEM_SEARCH_IMAGE, 0, R.string.menuitem_search_image)
+                menu.add(0, MENU_ITEM_VIEW_HYPERLINK, 0, R.string.menuitem_view_hyperlink)
+                menu.add(0, MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
+                menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
                 //menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 1, R.string.menuitem_download_image)
+                menu.setHeaderTitle(webView.hitTestResult.extra.toString())
             }
             else-> super.onCreateContextMenu(menu, v, menuInfo)
         }
