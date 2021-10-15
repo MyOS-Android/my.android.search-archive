@@ -1,5 +1,30 @@
 <resources>
-    <!-- Tab Menu -->
+    <!-- Translator Tab Menu -->
+    <string name="deepl">DeepL</string>
+    <string name="google_translate">Google</string>
+    <string name="urban_dictionary">Urban Dictionary</string>
+    <string name="jikipedia">jikipedia</string>
+
+    <string name="url_deepl" translatable="false">https://www.deepl.com/translator#?/</string>
+    <string name="url_google_translate" translatable="false">https://translate.google.com/#view=home&amp;op=translate&amp;sl=auto&amp;tl=</string>
+    <string name="url_urban_dictionary" translatable="false">https://www.urbandictionary.com/define.php?term=</string>
+    <string name="url_jikipedia" translatable="false">https://jikipedia.com/search?phrase=</string>
+
+    <string-array name="translator_tab_title">
+        <item>@string/deepl</item>
+        <item>@string/google_translate</item>
+        <item>@string/urban_dictionary</item>
+        <item>@string/jikipedia</item>
+    </string-array>
+
+    <string-array name="translator_url">
+        <item>@string/url_deepl</item>
+        <item>@string/url_google_translate</item>
+        <item>@string/url_urban_dictionary</item>
+        <item>@string/url_jikipedia</item>
+    </string-array>
+
+    <!-- MetaSearch Tab Menu -->
     <string name="web">Web</string>
     <string name="searx">Searx</string>
     <string name="twitter">Twitter</string>
@@ -113,7 +138,7 @@
         <item>@string/url_searx_9</item>
     </string-array>
 
-    <!-- twitter instence-->
+    <!-- Twitter instence-->
     <string name="url_twitter" translatable="false">https://twitter.com/search?q=</string>
     <string name="url_nitter_0" translatable="false">https://nitter.net/search?q=</string>
     <string name="url_nitter_1" translatable="false">https://nitter.snopyta.org/search?q=</string>
@@ -184,7 +209,6 @@
     </string-array>
 
     <!-- Youtube instence-->
-
     <string name="url_youtube"  translatable="false">https://www.youtube.com/results?q=</string>
     <string name="url_invidious_1"  translatable="false">https://invidious.snopyta.org/results?q=</string>
     <string name="url_invidious_2"  translatable="false">https://invidious.namazso.eu/results?q=</string>
