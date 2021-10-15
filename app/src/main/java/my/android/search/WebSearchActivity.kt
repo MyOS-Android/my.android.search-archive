@@ -72,7 +72,7 @@ class WebSearchActivity : AppCompatActivity() {
                     set(recyclerView, (get(recyclerView) as Int) * 6)
                 }
 
-                // Click on tab 0 or 1 to temporarily change it's search engine
+                // Click on tab 0-4 to temporarily change it's search engine
                 val tabStrip: LinearLayout = tabs.getChildAt(0) as LinearLayout
                 tabStrip.getChildAt(0).setOnClickListener {
                     if (viewPager.currentItem == 0) {
