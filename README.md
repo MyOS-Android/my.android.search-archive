@@ -1,5 +1,12 @@
 # Search : A multi-purpose search app for Android.
-a personal fork of [Setter](https://github.com/scubajeff/Setter) for [MyOS Project](https://github.com/MyOS-Android)
+a personal fork of [Setter](https://github.com/scubajeff/Setter) (License Apache 2.0)
+
+## Changes
+  - Option to use privacy friendly alternatives front-ends (whoogle, searx, nitter, libreddit, teddit, invidious, Piped)
+  - User can add a Costume Search Engine
+  - Handle Android ACTION_WEB_SEARCH
+  - Bring back `open in browser` option
+  - ...
 
 ## Features
   - Search for the selected text in multiple search engines all at the same time.
